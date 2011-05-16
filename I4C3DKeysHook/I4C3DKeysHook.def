@@ -1,0 +1,8 @@
+LIBRARY	I4C3DKeysHook
+
+EXPORTS
+	MakeHook			@1
+	UnHook				@2
+	AddHookedKeyCode	@3
+	RemoveHookedKeyCode	@4
+	IsKeyDown			@5
