@@ -19,10 +19,10 @@ extern "C" {
 	DLL_EXPORT BOOL MakeHook( HWND hWnd );
 	DLL_EXPORT void UnHook();
 
-	BOOL AddHookedKeyCode( UINT uKeyCode );
-	void RemoveHookedKeyCode( UINT uKeyCode );
-	BOOL IsKeyDown( UINT uKeyCode );
-	BOOL IsAllKeysDown();
+	DLL_EXPORT BOOL AddHookedKeyCode( UINT uKeyCode );
+	DLL_EXPORT void RemoveHookedKeyCode( UINT uKeyCode );
+	DLL_EXPORT BOOL IsKeyDown( UINT uKeyCode );
+	DLL_EXPORT BOOL IsAllKeysDown();
 
 #ifdef __cplusplus
 }

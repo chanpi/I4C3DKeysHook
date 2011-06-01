@@ -6,3 +6,4 @@ EXPORTS
 	AddHookedKeyCode	@3
 	RemoveHookedKeyCode	@4
 	IsKeyDown			@5
+	IsAllKeysDown		@6

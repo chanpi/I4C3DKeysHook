@@ -24,6 +24,8 @@ namespace {
 	static BOOL g_bStart = FALSE;
 	static HookedKey g_uKeysEntry[ MAX_KEYCODES ];
 	static INT g_uKeysEntryCount = 0;
+
+	static int g_CalledCount = 0;
 }
 
 static LRESULT CALLBACK KeyHookProc(int code, WPARAM wParam, LPARAM lParam);
@@ -91,6 +93,7 @@ LRESULT CALLBACK KeyHookProc(int code, WPARAM wParam, LPARAM lParam)
 BOOL MakeHook( HWND hWnd )
 {
 	if ( g_bStart ) {
+		g_CalledCount++;
 		return TRUE;
 	}
 
@@ -102,6 +105,7 @@ BOOL MakeHook( HWND hWnd )
 	}
 
 	g_bStart = TRUE;
+	g_CalledCount++;
 	return TRUE;
 }
 
@@ -123,7 +127,11 @@ BOOL MakeHook( HWND hWnd )
 void UnHook()
 {
 	if ( g_hHook != NULL ) {
-		UnhookWindowsHookEx( g_hHook );
+		g_CalledCount--;
+		if (g_CalledCount <= 0) {
+			UnhookWindowsHookEx( g_hHook );
+			g_hHook = NULL;
+		}
 	}
 	g_bStart = FALSE;
 }
@@ -150,6 +158,11 @@ BOOL AddHookedKeyCode( UINT uKeyCode )
 {
 	if ( g_uKeysEntryCount >= MAX_KEYCODES ) {
 		return FALSE;
+	}
+	for (int i = 0;i < g_uKeysEntryCount; ++i) {
+		if (g_uKeysEntry[i].uKey == uKeyCode) {
+			return TRUE;
+		}
 	}
 	g_uKeysEntry[ g_uKeysEntryCount ].uKey = uKeyCode;
 	g_uKeysEntry[ g_uKeysEntryCount++ ].isUp = TRUE;
@@ -202,9 +215,21 @@ void RemoveHookedKeyCode( UINT uKeyCode )
  * @see
  * IsAllKeysDown()
  */
+#include <stdio.h>
 BOOL IsKeyDown( UINT uKeyCode )
 {
+	{
+		char szBuf[32];
+		sprintf_s(szBuf, 32, "%d\n", g_uKeysEntryCount);
+		OutputDebugStringA(szBuf);
+	}
+
 	for ( int i = 0; i < g_uKeysEntryCount; ++i ) {
+		{
+			char szBuf[32];
+			sprintf_s(szBuf, 32, "0x%x\n", g_uKeysEntry[ i ].uKey);
+			OutputDebugStringA(szBuf);
+		}
 		if ( g_uKeysEntry[ i ].uKey == uKeyCode && !g_uKeysEntry[ i ].isUp ) {
 			return TRUE;
 		}
