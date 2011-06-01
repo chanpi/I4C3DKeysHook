@@ -1,5 +1,8 @@
 LIBRARY	I4C3DKeysHook
 
+SECTIONS
+	.sharedata READ WRITE SHARED
+
 EXPORTS
 	MakeHook			@1
 	UnHook				@2
