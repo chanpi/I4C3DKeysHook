@@ -58,7 +58,7 @@ LRESULT CALLBACK KeyHookProc(int code, WPARAM wParam, LPARAM lParam)
 {
 	if ( code >= 0 && code == HC_ACTION ) {
 		for ( int i = 0; i < g_uKeysEntryCount; ++i ) {
-			if ( wParam == g_uKeysEntry[ i ].uKey ) {
+			if ( wParam != NULL && wParam == g_uKeysEntry[ i ].uKey ) {
 				if ( lParam < 0 ) {
 					g_uKeysEntry[ i ].isUp = TRUE;
 				} else { // KeyDown
