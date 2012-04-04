@@ -1,4 +1,4 @@
-LIBRARY	I4C3DKeysHook
+LIBRARY	HmKeysHook
 
 SECTIONS
 	.sharedata READ WRITE SHARED
